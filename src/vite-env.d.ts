@@ -20,4 +20,6 @@ type CustomEnvKeys = keyof Omit<
 declare interface ImportMetaEnv {
   VITE_API_URL?: string;
   VITE_IS_HASH?: string;
+  VITE_IS_FAKE_SERVER?: string;
+  VITE_FORCE_FAKE_SERVER?: string;
 }
