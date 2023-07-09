@@ -19,7 +19,9 @@ jobs:
     env:
       VITE_API_URL: ${{ vars.API_URL }}
       BASE_URL: ${{ vars.BASE_URL }}
-      VITE_IS_HASH: ${{ vars.VITE_IS_HASH }}
+      VITE_IS_HASH: ${{ vars.IS_HASH }}
+      VITE_IS_FAKE_SERVER: ${{ vars.IS_FAKE_SERVER }};
+      VITE_FORCE_FAKE_SERVER: ${{ vars.FORCE_FAKE_SERVER }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
