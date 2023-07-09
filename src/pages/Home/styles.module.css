@@ -1,0 +1,15 @@
+.wrapper{
+  min-height: 100vh;
+}
+
+.wrapper > form {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.wrapper button {
+  height: 56px;
+}
