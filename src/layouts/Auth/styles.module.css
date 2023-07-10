@@ -24,4 +24,8 @@
     display: grid;
     place-content: center;
   }
+
+  .wrapper:has(img){
+    margin-right: 4rem;
+  }
 }

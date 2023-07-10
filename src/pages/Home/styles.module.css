@@ -1,5 +1,6 @@
 .wrapper{
-  min-height: 100vh;
+  min-height: calc(100vh - 4.5rem);
+  margin-top: 4.5rem;
 }
 
 .wrapper > form {
@@ -11,5 +12,5 @@
 }
 
 .wrapper button {
-  height: 56px;
+  height: 52px;
 }

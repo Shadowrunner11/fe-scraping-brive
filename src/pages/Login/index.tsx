@@ -68,7 +68,15 @@ const useLogin = () => {
   );
 };
 
-export default function Login() {
+interface LoginProps {
+  showRememberMe?: boolean;
+  showForgotPassword?: boolean;
+}
+
+export default function Login({
+  showForgotPassword,
+  showRememberMe,
+}: LoginProps) {
   const login = useLogin();
 
   const {
@@ -124,11 +132,15 @@ export default function Login() {
           justifyContent="space-between"
           alignItems="center"
         >
-          <FormControlLabel control={<Checkbox />} label="Remember me" />
-          <Link to={"/forgot-password?"}>Forgot password?</Link>
+          {showRememberMe && (
+            <FormControlLabel control={<Checkbox />} label="Remember me" />
+          )}
+          {showForgotPassword && (
+            <Link to={"/forgot-password?"}>Forgot password?</Link>
+          )}
         </Stack>
         <Button type="submit" aria-label="login" variant="contained">
-          Login
+          Log in
         </Button>
       </Box>
     </Auth>

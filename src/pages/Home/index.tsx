@@ -16,6 +16,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { searchClient } from "../../lib/modules";
 import { SearchResponse } from "../../lib/services/types";
 import History from "../History";
+import { resolver } from "./validation";
 
 interface SearchDTO {
   searchText: string;
@@ -35,7 +36,13 @@ const useSearch = () => {
 };
 
 export default function Home() {
-  const { register, handleSubmit } = useForm<SearchDTO>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SearchDTO>({
+    resolver,
+  });
 
   const [searchData, setSearchData] = useState<SearchResponse | null>(null);
 
@@ -68,6 +75,9 @@ export default function Home() {
           Search
         </Button>
       </Box>
+      <Typography color="error" textAlign="center">
+        {errors?.searchText?.message}
+      </Typography>
       <Paper sx={{ minHeight: "30vh" }}>
         {!searchData && <Typography>No Data</Typography>}
         <Typography>{searchData?.companyName}</Typography>

@@ -5,13 +5,14 @@ import {
   Input,
   Box,
   Button,
+  Typography,
 } from "@mui/material";
 import { MailOutline as MailOutlineIcon } from "@mui/icons-material";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PasswordInput } from "../../components/PasswordInput";
 
 import { useSignIn } from "react-auth-kit";
@@ -61,7 +62,14 @@ export default function Register() {
   }, [isFetched, data, loginData]);
 
   return (
-    <Auth title="Sign up">
+    <Auth
+      title="Sign up"
+      description={
+        <Typography>
+          Already have an account? <Link to={"/login"}>Sign in</Link>{" "}
+        </Typography>
+      }
+    >
       <Box
         component="form"
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -83,6 +91,7 @@ export default function Register() {
         </FormControl>
         <PasswordInput inputProps={register("password")} />
         <PasswordInput
+          hasShow={false}
           inputProps={register("confirmPassword")}
           id="confirmPassword"
           label="Confirm password"
