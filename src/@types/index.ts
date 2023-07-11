@@ -27,3 +27,11 @@ export interface AuthResponse {
   authState: string;
   token: string;
 }
+
+export interface RegisterPayload {
+  username: string;
+  password: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+}

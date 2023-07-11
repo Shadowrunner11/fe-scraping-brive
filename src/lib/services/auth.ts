@@ -1,4 +1,5 @@
 import { AxiosInstance } from "axios";
+import { RegisterPayload } from "../../@types";
 
 interface AuthResponse {
   token: string;
@@ -12,8 +13,8 @@ export class AuthFacade {
   constructor(private client: AxiosInstance) {}
 
   async login(username: string, password: string) {
-    const { data } = await this.client.post<AuthResponse>("/login", {
-      username,
+    const { data } = await this.client.post<AuthResponse>("/Auth/login", {
+      email: username,
       password,
     });
 
@@ -21,6 +22,15 @@ export class AuthFacade {
       ...this.client.defaults.headers.common,
       Authorization: `Bearer ${data.token}`,
     };
+
+    return data;
+  }
+
+  async register(registerPayload: RegisterPayload) {
+    const { data } = await this.client.post<AuthResponse>(
+      "/Auth/register",
+      registerPayload,
+    );
 
     return data;
   }
@@ -37,7 +47,7 @@ export class AuthFacade {
   }
 
   async checkAuth(token?: string) {
-    const { data } = await this.client.get<AuthResponse>("/auth", {
+    const { data } = await this.client.get<AuthResponse>("/Auth/auth", {
       params: {
         token,
       },

@@ -20,8 +20,8 @@ const userDummy = {
 const searchDummy = {
   companyName: "asdasd",
   createdAt: "2022-10-12",
-  id: 12,
-  totalJobs: 23,
+  historyId: 12,
+  jobsCount: 23,
 };
 
 export const returnDummy = () => userDummy;
@@ -36,8 +36,8 @@ export const searchHandler: RouteHandler<AnyRegistry, AnyResponse> = (
   return {
     companyName: "asdasd",
     createdAt: "2022-10-12",
-    id: 12,
-    totalJobs: 23,
+    historyId: 12,
+    jobsCount: 23,
   };
 };
 
