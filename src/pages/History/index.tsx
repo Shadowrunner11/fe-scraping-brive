@@ -3,6 +3,8 @@ import { MaterialReactTable, MRT_PaginationState } from 'material-react-table';
 import { useMemo, useState } from 'react';
 import { searchClient } from '../../lib/modules';
 import { columns } from './config';
+import { Box, Typography } from '@mui/material';
+import { FolderOffOutlined } from '@mui/icons-material';
 interface HistoryProps {
   searchId?: number | string;
 }
@@ -32,6 +34,14 @@ export function History({ searchId }: HistoryProps) {
       })),
     [data],
   );
+
+  if (!parsedData?.length)
+    return (
+      <Box sx={{ display: 'grid', placeContent: 'center' }}>
+        <FolderOffOutlined sx={{ fontSize: 60 }} />
+        <Typography>There is no data yet</Typography>
+      </Box>
+    );
 
   return (
     <MaterialReactTable

@@ -9,39 +9,21 @@ import {
   Paper,
   Typography,
 } from '@mui/material';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-
-import styles from './styles.module.css';
-import { useQuery } from '@tanstack/react-query';
-import { searchClient } from '../../lib/modules';
 
 import { History } from '../History';
 import { resolver } from './validation';
-import hashIt from 'hash-it';
+
 import { SearchResult } from './SearchResult';
+import { useSearch } from './useSearch';
+
+import styles from './styles.module.css';
+import { AxiosError } from 'axios';
 
 interface SearchDTO {
   searchText: string;
 }
-
-const useSearch = () => {
-  const [text, setText] = useState<string | undefined>();
-  const query = useQuery(
-    [text ?? hashIt('nodata')],
-    () => searchClient.searchScrap({ text: text ?? '' }),
-    {
-      enabled: !!text,
-    },
-  );
-
-  return {
-    search: useCallback((text: string) => {
-      setText(text);
-    }, []),
-    ...query,
-  };
-};
 
 export default function Home() {
   const {
@@ -52,7 +34,7 @@ export default function Home() {
     resolver,
   });
 
-  const { search, data: searchData, isFetching } = useSearch();
+  const { search, data: searchData, isFetching, error } = useSearch();
 
   const _handleSubmit: SubmitHandler<SearchDTO> = useCallback(
     ({ searchText }) => {
@@ -83,7 +65,8 @@ export default function Home() {
       </Box>
 
       <Typography color='error' textAlign='center'>
-        {errors?.searchText?.message}
+        {errors?.searchText?.message ??
+          ((error as AxiosError) ? 'There are no results' : null)}
       </Typography>
 
       <Paper
