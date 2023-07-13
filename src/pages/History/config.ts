@@ -8,7 +8,7 @@ export const columns: MRT_ColumnDef<SearchResponse>[] = [
     muiTableHeadCellProps: { sx: { color: "green" } }, //custom props
   },
   {
-    accessorKey: "totalJobs",
+    accessorKey: "jobsCount",
     header: "Total Jobs",
   },
 ];

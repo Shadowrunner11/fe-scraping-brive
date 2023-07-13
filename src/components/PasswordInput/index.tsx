@@ -38,6 +38,7 @@ export const PasswordInput = ({
     <FormControl>
       <InputLabel htmlFor={id}>{label}</InputLabel>
       <Input
+        data-testid="password"
         id={id}
         type={isVisible ? "text" : "password"}
         inputProps={inputProps}

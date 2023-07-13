@@ -3,18 +3,21 @@ import { MaterialReactTable, MRT_PaginationState } from "material-react-table";
 import { useState } from "react";
 import { searchClient } from "../../lib/modules";
 import { columns } from "./config";
+interface HistoryProps {
+  searchId?: number | string;
+}
 
-export default function History() {
+export function History({ searchId }: HistoryProps) {
   const [page, setPage] = useState<MRT_PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
 
   const { data } = useQuery(
-    ["history", page],
+    ["history", page, searchId],
     () =>
       searchClient.searchHistoryPaginated({
-        page: page.pageIndex + 1,
+        page: page.pageIndex,
       }),
     {
       keepPreviousData: true,
