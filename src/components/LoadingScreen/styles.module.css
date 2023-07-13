@@ -7,8 +7,9 @@
 
 .loadingScreen__content{
   width: 300px;
-  animation: 0.3s ease-in infinite 0s  pulse;
+  animation: 1s ease-in infinite 0s  pulse;
   display: grid;
+  transform: translateX(20px);
   place-content: center;
 }
 

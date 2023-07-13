@@ -4,6 +4,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Stack,
   Tooltip,
   Typography,
 } from '@mui/material';
@@ -46,12 +47,14 @@ export const UserMenu = () => {
 
   return (
     <Box sx={{ flexGrow: 0 }}>
-      <Tooltip title='Open settings'>
-        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt={user.firstName} src={user.avatarURL} />
-        </IconButton>
-      </Tooltip>
-      <SwitchTheme />
+      <Stack direction='row' spacing={1}>
+        <Tooltip title='Open settings'>
+          <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+            <Avatar alt={user.firstName} src={user.avatarURL} />
+          </IconButton>
+        </Tooltip>
+        <SwitchTheme />
+      </Stack>
       <Menu
         sx={{ mt: '45px' }}
         id='menu-appbar'
