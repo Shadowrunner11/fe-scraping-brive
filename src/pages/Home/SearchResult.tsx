@@ -9,7 +9,7 @@ export const SearchResult = ({ searchData }: SearchResultProps) => (
   <>
     {!searchData && <Typography>No Data</Typography>}
     <Typography>
-      <strong>Company name</strong>
+      {searchData?.companyName && <strong>Company name</strong>}
       {searchData?.companyName}
     </Typography>
     <Typography>
@@ -18,7 +18,8 @@ export const SearchResult = ({ searchData }: SearchResultProps) => (
         : null}
     </Typography>
     <Typography>
-      <strong>Total jobs</strong> {searchData?.jobsCount}
+      {searchData?.jobsCount && <strong>Total jobs</strong>}{' '}
+      {searchData?.jobsCount}
     </Typography>
   </>
 );
