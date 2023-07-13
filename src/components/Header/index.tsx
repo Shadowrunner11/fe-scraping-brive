@@ -15,7 +15,12 @@ export const Header = () => {
             />
           </Box>
           {/* <NavMenu /> */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: 'none', md: 'flex', color: 'whitesmoke' },
+            }}
+          >
             <Link to='/'>Scraping</Link>
           </Box>
           <UserMenu />
