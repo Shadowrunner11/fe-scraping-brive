@@ -3,10 +3,6 @@ import { AuthFacade } from "../services/auth";
 import { apiBaseURL, isFakeServerOn } from "../../config/api";
 import { SearchFacade } from "../services/search";
 
-const server = isFakeServerOn ? await import("../../../mock/server") : null;
-
-server?.initServer();
-
 const token = localStorage.getItem("_auth");
 
 const axiosClient = axios.create({
