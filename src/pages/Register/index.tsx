@@ -57,8 +57,9 @@ export default function Register() {
   const _handleSubmit: SubmitHandler<RegisterPayload> = useCallback(
     async (data) => {
       setIsLoading(true);
-      await signUp(data);
-      setIsLoading(false);
+      await signUp(data)
+          .finally(()=>setIsLoading(false));
+      
     },
     [signUp],
   );
