@@ -1,40 +1,46 @@
-import { SearchOutlined as SearchOffOutlinedIcon } from "@mui/icons-material";
+import { SearchOutlined as SearchOffOutlinedIcon } from '@mui/icons-material';
 import {
   Box,
   Button,
+  CircularProgress,
   FormControl,
   InputAdornment,
   OutlinedInput,
   Paper,
   Typography,
-} from "@mui/material";
-import { useCallback, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+} from '@mui/material';
+import { useCallback, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
-import styles from "./styles.module.css";
-import { useQueryClient } from "@tanstack/react-query";
-import { searchClient } from "../../lib/modules";
-import { SearchResponse } from "../../lib/services/types";
-import { History } from "../History";
-import { resolver } from "./validation";
+import styles from './styles.module.css';
+import { useQuery } from '@tanstack/react-query';
+import { searchClient } from '../../lib/modules';
+
+import { History } from '../History';
+import { resolver } from './validation';
+import hashIt from 'hash-it';
+import { SearchResult } from './SearchResult';
 
 interface SearchDTO {
   searchText: string;
 }
 
 const useSearch = () => {
-  const client = useQueryClient();
-
-  return useCallback(
-    async (text: string) => {
-      const data = await client.fetchQuery([text], () =>
-        searchClient.searchScrap({ text }),
-      );
-
-      return data;
+  const [text, setText] = useState<string | undefined>();
+  const query = useQuery(
+    [text ?? hashIt('nodata')],
+    () => searchClient.searchScrap({ text: text ?? '' }),
+    {
+      enabled: !!text,
     },
-    [client],
   );
+
+  return {
+    search: useCallback((text: string) => {
+      setText(text);
+    }, []),
+    ...query,
+  };
 };
 
 export default function Home() {
@@ -46,13 +52,11 @@ export default function Home() {
     resolver,
   });
 
-  const [searchData, setSearchData] = useState<SearchResponse | null>(null);
-
-  const search = useSearch();
+  const { search, data: searchData, isFetching } = useSearch();
 
   const _handleSubmit: SubmitHandler<SearchDTO> = useCallback(
-    async ({ searchText }) => {
-      setSearchData(await search(searchText));
+    ({ searchText }) => {
+      search(searchText);
     },
     [search],
   );
@@ -60,40 +64,35 @@ export default function Home() {
   return (
     <Box className={styles.wrapper}>
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-      <Box component="form" onSubmit={handleSubmit(_handleSubmit)}>
-        <FormControl variant="outlined">
+      <Box component='form' onSubmit={handleSubmit(_handleSubmit)}>
+        <FormControl variant='outlined'>
           <OutlinedInput
-            id="search"
-            inputProps={register("searchText")}
-            placeholder="Enter your search"
+            id='search'
+            inputProps={register('searchText')}
+            placeholder='Enter your search'
             startAdornment={
-              <InputAdornment position="start">
+              <InputAdornment position='start'>
                 <SearchOffOutlinedIcon />
               </InputAdornment>
             }
           />
         </FormControl>
-        <Button type="submit" aria-label="search" variant="contained">
+        <Button type='submit' aria-label='search' variant='contained'>
           Search
         </Button>
       </Box>
-      <Typography color="error" textAlign="center">
+      <Typography color='error' textAlign='center'>
         {errors?.searchText?.message}
       </Typography>
-      <Paper sx={{ minHeight: "30vh" }}>
-        {!searchData && <Typography>No Data</Typography>}
-        <Typography>{searchData?.companyName}</Typography>
-        <Typography>
-          {searchData?.createdAt
-            ? new Date(searchData?.createdAt).toLocaleString()
-            : null}
-        </Typography>
-        <Typography>{searchData?.jobsCount}</Typography>
+
+      <Paper sx={{ minHeight: '30vh' }}>
+        {isFetching ? <CircularProgress /> : <SearchResult />}
       </Paper>
+
       <History
         searchId={
-          (searchData?.jobsCount.toString() ?? "") +
-          (searchData?.companyName ?? "")
+          (searchData?.jobsCount.toString() ?? '') +
+          (searchData?.companyName ?? '')
         }
       />
     </Box>

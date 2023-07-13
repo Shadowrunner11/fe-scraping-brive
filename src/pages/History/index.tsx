@@ -1,8 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
-import { MaterialReactTable, MRT_PaginationState } from "material-react-table";
-import { useState } from "react";
-import { searchClient } from "../../lib/modules";
-import { columns } from "./config";
+import { useQuery } from '@tanstack/react-query';
+import { MaterialReactTable, MRT_PaginationState } from 'material-react-table';
+import { useState } from 'react';
+import { searchClient } from '../../lib/modules';
+import { columns } from './config';
 interface HistoryProps {
   searchId?: number | string;
 }
@@ -13,8 +13,8 @@ export function History({ searchId }: HistoryProps) {
     pageSize: 10,
   });
 
-  const { data } = useQuery(
-    ["history", page, searchId],
+  const { data, isFetching } = useQuery(
+    ['history', page, searchId],
     () =>
       searchClient.searchHistoryPaginated({
         page: page.pageIndex,
@@ -36,6 +36,7 @@ export function History({ searchId }: HistoryProps) {
       enableColumnOrdering
       state={{
         pagination: page,
+        isLoading: isFetching,
       }}
     />
   );

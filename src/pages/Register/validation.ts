@@ -1,7 +1,7 @@
-import * as yup from "yup";
+import * as yup from 'yup';
 
-import { yupResolver } from "@hookform/resolvers/yup";
-import { RegisterPayload } from "../../@types";
+import { yupResolver } from '@hookform/resolvers/yup';
+import { RegisterPayload } from '../../@types';
 
 type Schema = RegisterPayload & { confirmPassword: string };
 
@@ -10,10 +10,11 @@ type Shape = {
 };
 
 const schema = yup.object().shape<Shape>({
-  password: yup.string().required(),
+  password: yup.string().required().min(6),
   confirmPassword: yup
     .string()
-    .oneOf([yup.ref("password")], "Passwords must match"),
+    .oneOf([yup.ref('password')], 'Passwords must match')
+    .min(6),
   email: yup.string().required().email(),
   firstName: yup.string().required(),
   lastName: yup.string().required(),
