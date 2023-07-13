@@ -6,9 +6,9 @@ export const LoadingScreen = () => (
     <Box className={styles.loadingScreen__content}>
       <svg
         xmlns='http://www.w3.org/2000/svg'
-        width='300'
-        height='128'
-        viewBox='0 0 300 128'
+        width='171'
+        height='64'
+        viewBox='0 0 171 64'
         fill='none'
       >
         <path

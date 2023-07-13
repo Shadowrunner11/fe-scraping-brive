@@ -7,7 +7,10 @@ export const Header = () => {
   return (
     <AppBar>
       <Container maxWidth='xl'>
-        <Toolbar disableGutters>
+        <Toolbar
+          disableGutters
+          sx={{ justifyContent: { xs: 'space-between', md: 'normal' } }}
+        >
           <Box width={100}>
             <img
               src='https://brivesoluciones.com/wp-content/uploads/2022/09/lg_brive-1.svg'
