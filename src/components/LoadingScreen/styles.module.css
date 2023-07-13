@@ -8,6 +8,8 @@
 .loadingScreen__content{
   width: 300px;
   animation: pulse 0.3 infinite ease-in;
+  display: grid;
+  place-content: center;
 }
 
 @keyframes pulse {
