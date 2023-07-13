@@ -17,7 +17,7 @@ const schema = yup.object().shape<Shape>({
   email: yup.string().required().email(),
   firstName: yup.string().required(),
   lastName: yup.string().required(),
-  username: yup.string().required(),
+  userName: yup.string().required(),
 });
 
 export const resolver = yupResolver(schema);
