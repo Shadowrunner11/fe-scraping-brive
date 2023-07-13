@@ -7,7 +7,7 @@
 
 .loadingScreen__content{
   width: 300px;
-  animation: pulse 0.3 infinite ease-in;
+  animation: 0.3s ease-in infinite 0s  pulse;
   display: grid;
   place-content: center;
 }
