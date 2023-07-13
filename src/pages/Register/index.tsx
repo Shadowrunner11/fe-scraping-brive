@@ -44,9 +44,9 @@ const useRegister = () => {
   const { login } = useLogin();
 
   useEffect(() => {
-    if (registerPayload && !query.error)
+    if (registerPayload && !query.error && !query.isFetching)
       login(registerPayload.email, registerPayload.password);
-  }, [login, query.error, registerPayload]);
+  }, [login, query.error, query.isFetching, registerPayload]);
 
   return {
     register: useCallback((payload: RegisterPayload) => {
@@ -76,7 +76,7 @@ export default function Register() {
     <Auth
       title='Sign up'
       description={
-        <Typography color='error'>
+        <Typography>
           Already have an account? <Link to={'/login'}>Sign in</Link>{' '}
         </Typography>
       }
