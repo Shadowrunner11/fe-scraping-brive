@@ -7,9 +7,9 @@ interface SearchResultProps {
 
 export const SearchResult = ({ searchData }: SearchResultProps) => (
   <>
-    {!searchData && <Typography>No Data</Typography>}
+    <Typography>{searchData ? 'Successfully' : 'No Data'}</Typography>
     <Typography>
-      {searchData?.companyName && <strong>Company name</strong>}
+      {searchData?.companyName && <strong>Company name:</strong>}{' '}
       {searchData?.companyName}
     </Typography>
     <Typography>
@@ -18,7 +18,7 @@ export const SearchResult = ({ searchData }: SearchResultProps) => (
         : null}
     </Typography>
     <Typography>
-      {searchData?.jobsCount && <strong>Total jobs</strong>}{' '}
+      {searchData?.jobsCount && <strong>Total jobs:</strong>}{' '}
       {searchData?.jobsCount}
     </Typography>
   </>
