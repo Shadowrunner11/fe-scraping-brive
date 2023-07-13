@@ -76,7 +76,7 @@ export default function Register() {
     <Auth
       title='Sign up'
       description={
-        <Typography color='error'>
+        <Typography>
           Already have an account? <Link to={'/login'}>Sign in</Link>{' '}
         </Typography>
       }

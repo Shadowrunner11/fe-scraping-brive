@@ -81,18 +81,20 @@ export default function Home() {
           Search
         </Button>
       </Box>
+
       <Typography color='error' textAlign='center'>
         {errors?.searchText?.message}
       </Typography>
 
-      <Paper sx={{ minHeight: '30vh' }}>
+      <Paper
+        sx={{ minHeight: '30vh', display: 'grid', placeContent: 'center' }}
+      >
         {isFetching ? (
           <CircularProgress />
         ) : (
           <SearchResult searchData={searchData} />
         )}
       </Paper>
-
       <History
         searchId={
           (searchData?.jobsCount.toString() ?? '') +

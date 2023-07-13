@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { MaterialReactTable, MRT_PaginationState } from 'material-react-table';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { searchClient } from '../../lib/modules';
 import { columns } from './config';
 interface HistoryProps {
@@ -24,6 +24,15 @@ export function History({ searchId }: HistoryProps) {
     },
   );
 
+  const parsedData = useMemo(
+    () =>
+      data?.results?.map(({ createdAt, ...rest }) => ({
+        ...rest,
+        createdAt: new Date(createdAt).toLocaleString(),
+      })),
+    [data],
+  );
+
   return (
     <MaterialReactTable
       onPaginationChange={setPage}
@@ -32,7 +41,7 @@ export function History({ searchId }: HistoryProps) {
       enableFilters={false}
       rowCount={data?.info.total}
       enableRowNumbers
-      data={data?.results ?? []}
+      data={parsedData ?? []}
       enableColumnOrdering
       state={{
         pagination: page,
