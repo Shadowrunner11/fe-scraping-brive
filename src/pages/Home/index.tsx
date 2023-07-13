@@ -86,7 +86,11 @@ export default function Home() {
       </Typography>
 
       <Paper sx={{ minHeight: '30vh' }}>
-        {isFetching ? <CircularProgress /> : <SearchResult />}
+        {isFetching ? (
+          <CircularProgress />
+        ) : (
+          <SearchResult searchData={searchData} />
+        )}
       </Paper>
 
       <History
