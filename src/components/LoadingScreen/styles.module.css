@@ -10,11 +10,11 @@
   animation: 1s ease-in infinite 0s  pulse;
   display: grid;
   place-content: center;
+  transform-origin: center;
 }
 
 @keyframes pulse {
   50%{
     transform: scale(1.2);
-    transform-origin: center;
   }
 }
