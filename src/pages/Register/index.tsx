@@ -129,7 +129,7 @@ export default function Register() {
           <InputLabel htmlFor="userName">User Name</InputLabel>
           <Input
             id="useName"
-            inputProps={register("username")}
+            inputProps={register("userName")}
             placeholder="User Name"
             startAdornment={
               <InputAdornment position="start">
