@@ -6,9 +6,11 @@ import {
   MenuItem,
   Tooltip,
   Typography,
-} from "@mui/material";
-import { MouseEvent, useCallback, useState } from "react";
-import { useAuthUser, useSignOut } from "react-auth-kit";
+} from '@mui/material';
+import { MouseEvent, useCallback, useState } from 'react';
+import { useAuthUser, useSignOut } from 'react-auth-kit';
+
+import { SwitchTheme } from './SwitchTheme';
 
 interface UserAuthData {
   firstName: string;
@@ -44,29 +46,30 @@ export const UserMenu = () => {
 
   return (
     <Box sx={{ flexGrow: 0 }}>
-      <Tooltip title="Open settings">
+      <Tooltip title='Open settings'>
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
           <Avatar alt={user.firstName} src={user.avatarURL} />
         </IconButton>
       </Tooltip>
+      <SwitchTheme />
       <Menu
-        sx={{ mt: "45px" }}
-        id="menu-appbar"
+        sx={{ mt: '45px' }}
+        id='menu-appbar'
         anchorEl={anchorElUser}
         anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
+          vertical: 'top',
+          horizontal: 'right',
         }}
         keepMounted
         transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
+          vertical: 'top',
+          horizontal: 'right',
         }}
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
         <MenuItem onClick={handleClickLogout}>
-          <Typography textAlign="center">Logout</Typography>
+          <Typography textAlign='center'>Logout</Typography>
         </MenuItem>
       </Menu>
     </Box>
