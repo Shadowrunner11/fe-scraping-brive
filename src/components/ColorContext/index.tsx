@@ -6,7 +6,7 @@ export const ColorModeWrapper = ({ children }: PropsWithChildren) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
   const [colorMode, setColorMode] = useState<string>(
-    localStorage.getItem('mode') ?? (prefersDarkMode ? 'dark' : 'light'),
+    localStorage.getItem('mode') ?? (!prefersDarkMode ? 'dark' : 'light'),
   );
 
   const colorModeOptions = useMemo(
