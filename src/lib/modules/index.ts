@@ -1,6 +1,6 @@
 import axios from "axios";
 import { AuthFacade } from "../services/auth";
-import { apiBaseURL, isFakeServerOn } from "../../config/api";
+import { apiBaseURL } from "../../config/api";
 import { SearchFacade } from "../services/search";
 
 const token = localStorage.getItem("_auth");
