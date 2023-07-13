@@ -29,7 +29,7 @@ export interface AuthResponse {
 }
 
 export interface RegisterPayload {
-  username: string;
+  userName: string;
   password: string;
   email: string;
   firstName: string;
