@@ -44,9 +44,9 @@ const useRegister = () => {
   const { login } = useLogin();
 
   useEffect(() => {
-    if (registerPayload && !query.error)
+    if (registerPayload && !query.error && !query.isFetching)
       login(registerPayload.email, registerPayload.password);
-  }, [login, query.error, registerPayload]);
+  }, [login, query.error, query.isFetching, registerPayload]);
 
   return {
     register: useCallback((payload: RegisterPayload) => {
