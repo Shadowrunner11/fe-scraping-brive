@@ -1,0 +1,17 @@
+.loadingScreen{
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  place-content: center;
+}
+
+.loadingScreen__content{
+  width: 300px;
+  animation: pulse 0.6 infinite ease-in;
+}
+
+@keyframes pulse {
+  50%{
+    transform: scale(1.6);
+  }
+}

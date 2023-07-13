@@ -1,4 +1,3 @@
-import { AirplayOutlined } from '@mui/icons-material';
 import { AppBar, Box, Container, Toolbar } from '@mui/material';
 
 import { Link } from 'react-router-dom';
@@ -9,9 +8,12 @@ export const Header = () => {
     <AppBar>
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
-          <AirplayOutlined
-            sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
-          />
+          <Box width={100}>
+            <img
+              src='https://brivesoluciones.com/wp-content/uploads/2022/09/lg_brive-1.svg'
+              alt='brive logo'
+            />
+          </Box>
           {/* <NavMenu /> */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             <Link to='/'>Brive</Link>
