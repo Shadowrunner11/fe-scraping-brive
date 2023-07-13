@@ -3,8 +3,8 @@ export interface SearchParams {
 }
 
 export interface SearchResponse {
-  id: number;
-  totalJobs: number;
+  historyId: number;
+  jobsCount: number;
   companyName: string;
   createdAt: string;
 }

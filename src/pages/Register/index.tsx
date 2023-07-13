@@ -4,64 +4,74 @@ import {
   InputLabel,
   Input,
   Box,
-  Button,
+  Typography,
 } from "@mui/material";
-import { MailOutline as MailOutlineIcon } from "@mui/icons-material";
+import {
+  BadgeOutlined,
+  MailOutline as MailOutlineIcon,
+} from "@mui/icons-material";
 
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useCallback, useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useCallback, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 import { PasswordInput } from "../../components/PasswordInput";
-
-import { useSignIn } from "react-auth-kit";
 
 import { Auth } from "../../layouts/Auth";
 
 import styles from "./styles.module.css";
+import { RegisterPayload } from "../../@types";
+import { authClient } from "../../lib/modules";
+import hashIt from "hash-it";
+import { useLogin } from "../../hooks";
+import { LoadingButton } from "@mui/lab";
+import { resolver } from "./validation";
 
-interface LoginDTO {
-  name: string;
-  password: string;
-  confirmPassword: string;
-}
+const useRegister = () => {
+  const client = useQueryClient();
+  const { login } = useLogin();
+
+  return useCallback(
+    async (payload: RegisterPayload) => {
+      await client.fetchQuery(["register", hashIt(payload)], () =>
+        authClient.register(payload),
+      );
+
+      login(payload.email, payload.password);
+    },
+    [client, login],
+  );
+};
 
 export default function Register() {
-  const [loginData, setLoginData] = useState<LoginDTO>();
-  const { register, handleSubmit } = useForm<LoginDTO>();
-  const navigate = useNavigate();
-  const signIn = useSignIn();
+  const { register, handleSubmit } = useForm<
+    RegisterPayload & { confirmPassword: string }
+  >({
+    resolver,
+  });
 
-  const { data, isFetched } = useQuery(
-    ["login"],
-    () => ({
-      token: loginData?.name ?? "asdasd",
-      expiresIn: 12341324,
-      tokenType: "Bearer",
-    }),
-    {
-      enabled: !!loginData,
+  const signUp = useRegister();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const _handleSubmit: SubmitHandler<RegisterPayload> = useCallback(
+    async (data) => {
+      setIsLoading(true);
+      await signUp(data);
+      setIsLoading(false);
     },
+    [signUp],
   );
 
-  const _handleSubmit: SubmitHandler<LoginDTO> = useCallback((data) => {
-    setLoginData(data);
-  }, []);
-
-  useEffect(() => {
-    if (!loginData && !isFetched) return;
-
-    if (!data) return;
-
-    signIn(data);
-
-    navigate("/");
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFetched, data, loginData]);
-
   return (
-    <Auth title="Sign up">
+    <Auth
+      title="Sign up"
+      description={
+        <Typography>
+          Already have an account? <Link to={"/login"}>Sign in</Link>{" "}
+        </Typography>
+      }
+    >
       <Box
         component="form"
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -72,7 +82,7 @@ export default function Register() {
           <InputLabel htmlFor="email">Email</InputLabel>
           <Input
             id="email"
-            inputProps={register("name")}
+            inputProps={register("email")}
             placeholder="Enter your email address"
             startAdornment={
               <InputAdornment position="start">
@@ -83,14 +93,59 @@ export default function Register() {
         </FormControl>
         <PasswordInput inputProps={register("password")} />
         <PasswordInput
+          hasShow={false}
           inputProps={register("confirmPassword")}
           id="confirmPassword"
           label="Confirm password"
           placeHolder="Retype your password"
         />
-        <Button type="submit" aria-label="login" variant="contained">
+        <FormControl>
+          <InputLabel htmlFor="lastName">Last Name</InputLabel>
+          <Input
+            id="lastName"
+            inputProps={register("lastName")}
+            placeholder="Last Name"
+            startAdornment={
+              <InputAdornment position="start">
+                <BadgeOutlined />
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+        <FormControl>
+          <InputLabel htmlFor="firstName">First Name</InputLabel>
+          <Input
+            id="firstNameName"
+            inputProps={register("firstName")}
+            placeholder="First Name"
+            startAdornment={
+              <InputAdornment position="start">
+                <BadgeOutlined />
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+        <FormControl>
+          <InputLabel htmlFor="userName">User Name</InputLabel>
+          <Input
+            id="useName"
+            inputProps={register("username")}
+            placeholder="User Name"
+            startAdornment={
+              <InputAdornment position="start">
+                <BadgeOutlined />
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+        <LoadingButton
+          loading={isLoading}
+          type="submit"
+          aria-label="login"
+          variant="contained"
+        >
           Register
-        </Button>
+        </LoadingButton>
       </Box>
     </Auth>
   );

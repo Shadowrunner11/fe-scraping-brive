@@ -18,6 +18,7 @@ interface PasswordInputProps {
   id?: string;
   placeHolder?: string;
   label?: string;
+  hasShow?: boolean;
 }
 
 function reduceIsVisible(state: boolean) {
@@ -29,6 +30,7 @@ export const PasswordInput = ({
   id = "password",
   label = "Password",
   placeHolder = "Enter your password",
+  hasShow = true,
 }: PasswordInputProps) => {
   const [isVisible, toggleIsVisible] = useReducer(reduceIsVisible, false);
 
@@ -36,6 +38,7 @@ export const PasswordInput = ({
     <FormControl>
       <InputLabel htmlFor={id}>{label}</InputLabel>
       <Input
+        data-testid="password"
         id={id}
         type={isVisible ? "text" : "password"}
         inputProps={inputProps}
@@ -46,17 +49,19 @@ export const PasswordInput = ({
           </InputAdornment>
         }
         endAdornment={
-          <InputAdornment
-            component={IconButton}
-            position="end"
-            onClick={toggleIsVisible}
-          >
-            {isVisible ? (
-              <VisibilityOffOutlinedIcon />
-            ) : (
-              <RemoveRedEyeOutlinedIcon />
-            )}
-          </InputAdornment>
+          hasShow && (
+            <InputAdornment
+              component={IconButton}
+              position="end"
+              onClick={toggleIsVisible}
+            >
+              {isVisible ? (
+                <VisibilityOffOutlinedIcon />
+              ) : (
+                <RemoveRedEyeOutlinedIcon />
+              )}
+            </InputAdornment>
+          )
         }
       />
     </FormControl>

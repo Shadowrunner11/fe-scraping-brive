@@ -6,7 +6,7 @@ permissions:
 on:
   push:
     branches:
-      - "dev"
+      - "develop"
     paths-ignore:
       - "**.mdx"
       - "**.md"

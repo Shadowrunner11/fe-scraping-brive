@@ -15,7 +15,8 @@ import styles from "./styles.module.css";
 import { useQueryClient } from "@tanstack/react-query";
 import { searchClient } from "../../lib/modules";
 import { SearchResponse } from "../../lib/services/types";
-import History from "../History";
+import { History } from "../History";
+import { resolver } from "./validation";
 
 interface SearchDTO {
   searchText: string;
@@ -26,16 +27,24 @@ const useSearch = () => {
 
   return useCallback(
     async (text: string) => {
-      return await client.fetchQuery([text], () =>
+      const data = await client.fetchQuery([text], () =>
         searchClient.searchScrap({ text }),
       );
+
+      return data;
     },
     [client],
   );
 };
 
 export default function Home() {
-  const { register, handleSubmit } = useForm<SearchDTO>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SearchDTO>({
+    resolver,
+  });
 
   const [searchData, setSearchData] = useState<SearchResponse | null>(null);
 
@@ -68,13 +77,25 @@ export default function Home() {
           Search
         </Button>
       </Box>
+      <Typography color="error" textAlign="center">
+        {errors?.searchText?.message}
+      </Typography>
       <Paper sx={{ minHeight: "30vh" }}>
         {!searchData && <Typography>No Data</Typography>}
         <Typography>{searchData?.companyName}</Typography>
-        <Typography>{searchData?.createdAt}</Typography>
-        <Typography>{searchData?.totalJobs}</Typography>
+        <Typography>
+          {searchData?.createdAt
+            ? new Date(searchData?.createdAt).toLocaleString()
+            : null}
+        </Typography>
+        <Typography>{searchData?.jobsCount}</Typography>
       </Paper>
-      <History />
+      <History
+        searchId={
+          (searchData?.jobsCount.toString() ?? "") +
+          (searchData?.companyName ?? "")
+        }
+      />
     </Box>
   );
 }

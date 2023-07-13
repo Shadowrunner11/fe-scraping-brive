@@ -7,7 +7,13 @@ import { ThemeProvider } from "@mui/material";
 import { darkTheme } from "./themes";
 import { AuthProvider } from "react-auth-kit";
 
-const client = new QueryClient();
+const client = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
   return (

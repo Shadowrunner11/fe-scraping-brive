@@ -1,40 +1,28 @@
 import { useQuery } from "@tanstack/react-query";
-import { MaterialReactTable } from "material-react-table";
-import { MRT_ColumnDef, MRT_PaginationState } from "material-react-table";
+import { MaterialReactTable, MRT_PaginationState } from "material-react-table";
 import { useState } from "react";
 import { searchClient } from "../../lib/modules";
-import { SearchResponse } from "../../lib/services/types";
+import { columns } from "./config";
+interface HistoryProps {
+  searchId?: number | string;
+}
 
-const columns: MRT_ColumnDef<SearchResponse>[] = [
-  {
-    accessorKey: "companyName", //simple recommended way to define a column
-    header: "Comapany Name",
-    muiTableHeadCellProps: { sx: { color: "green" } }, //custom props
-  },
-  {
-    accessorKey: "totalJobs",
-    header: "Total Jobs",
-  },
-];
-
-export default function History() {
+export function History({ searchId }: HistoryProps) {
   const [page, setPage] = useState<MRT_PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
 
   const { data } = useQuery(
-    ["history", page],
+    ["history", page, searchId],
     () =>
       searchClient.searchHistoryPaginated({
-        page: page.pageIndex + 1,
+        page: page.pageIndex,
       }),
     {
       keepPreviousData: true,
     },
   );
-
-  console.log(page);
 
   return (
     <MaterialReactTable

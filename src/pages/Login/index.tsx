@@ -7,19 +7,14 @@ import {
   Stack,
   Checkbox,
   FormControlLabel,
-  Button,
   Typography,
 } from "@mui/material";
 import { MailOutline as MailOutlineIcon } from "@mui/icons-material";
 
-import hash from "hash-it";
-
-import { useSignIn } from "react-auth-kit";
-
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useCallback } from "react";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { PasswordInput } from "../../components/PasswordInput";
 
 import { Auth } from "../../layouts/Auth";
@@ -29,47 +24,29 @@ import styles from "./styles.module.css";
 import human from "../../assets/Looking-for-candidate.svg";
 import { resolver } from "./validation";
 
-import { useQueryClient } from "@tanstack/react-query";
-import { authClient } from "../../lib/modules";
+import { useLogin } from "../../hooks";
+import { LoadingButton } from "@mui/lab";
+import { AxiosError } from "axios";
 
 interface LoginDTO {
   name: string;
   password: string;
 }
 
-const useLogin = () => {
-  const client = useQueryClient();
-  const signIn = useSignIn();
+interface LoginProps {
+  showRememberMe?: boolean;
+  showForgotPassword?: boolean;
+}
 
-  const navigate = useNavigate();
+function parseError(error?: AxiosError) {
+  return (error?.response?.data as string) ?? error?.message;
+}
 
-  return useCallback(
-    async (username: string, password: string) => {
-      const { token, expiresIn, firstName, lastName, userId } =
-        await client.fetchQuery(["login", username, hash({ password })], () =>
-          authClient.login(username, password),
-        );
-
-      if (
-        signIn({
-          expiresIn,
-          token,
-          tokenType: "Bearer",
-          authState: {
-            firstName,
-            lastName,
-            userId,
-          },
-        })
-      )
-        navigate("/");
-    },
-    [client, signIn, navigate],
-  );
-};
-
-export default function Login() {
-  const login = useLogin();
+export default function Login({
+  showForgotPassword,
+  showRememberMe,
+}: LoginProps) {
+  const { login, error, isFetching } = useLogin();
 
   const {
     register,
@@ -80,8 +57,8 @@ export default function Login() {
   });
 
   const _handleSubmit: SubmitHandler<LoginDTO> = useCallback(
-    async ({ name, password }) => {
-      await login(name, password);
+    ({ name, password }) => {
+      if (typeof login === "function") login(name, password);
     },
     [login],
   );
@@ -124,12 +101,22 @@ export default function Login() {
           justifyContent="space-between"
           alignItems="center"
         >
-          <FormControlLabel control={<Checkbox />} label="Remember me" />
-          <Link to={"/forgot-password?"}>Forgot password?</Link>
+          {showRememberMe && (
+            <FormControlLabel control={<Checkbox />} label="Remember me" />
+          )}
+          {showForgotPassword && (
+            <Link to={"/forgot-password?"}>Forgot password?</Link>
+          )}
         </Stack>
-        <Button type="submit" aria-label="login" variant="contained">
-          Login
-        </Button>
+        <Typography color="error">{parseError(error as AxiosError)}</Typography>
+        <LoadingButton
+          loading={isFetching}
+          type="submit"
+          aria-label="login"
+          variant="contained"
+        >
+          Log in
+        </LoadingButton>
       </Box>
     </Auth>
   );

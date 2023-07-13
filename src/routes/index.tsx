@@ -6,6 +6,7 @@ import {
 import { useIsAuthenticated } from "react-auth-kit";
 
 import { PropsWithChildren, lazy } from "react";
+import { App } from "../layouts/App";
 
 const LazyHome = lazy(() => import("../pages/Home"));
 
@@ -28,9 +29,15 @@ export const routes = createRouter([
     path: "/",
     element: (
       <PrivateRoute>
-        <LazyHome />
+        <App />
       </PrivateRoute>
     ),
+    children: [
+      {
+        path: "",
+        element: <LazyHome />,
+      },
+    ],
   },
   {
     path: "/login",
