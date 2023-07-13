@@ -9,12 +9,12 @@
   width: 300px;
   animation: 1s ease-in infinite 0s  pulse;
   display: grid;
-  transform: translateX(20px);
+  transform: translateX(40px);
   place-content: center;
 }
 
 @keyframes pulse {
   50%{
-    transform: scale(1.6);
+    transform: scale(1.2);
   }
 }
